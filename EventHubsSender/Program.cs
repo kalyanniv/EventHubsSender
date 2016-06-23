@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
 using Microsoft.ServiceBus.Messaging;
+using System.Data;
+using System.Data.SqlClient;
 
 namespace EventHubsSender
 {
@@ -23,24 +25,72 @@ namespace EventHubsSender
 
         static void SendingRandomMessages()
         {
-            var eventHubClient = EventHubClient.CreateFromConnectionString(connectionString, eventHubName);
-            while (true)
+            //Variables
+            var sqlConnectionString = "Data Source=tcp:asos-an-ods-generic-live-eun.database.windows.net,1433;Initial Catalog=AzureUsageOds;Integrated Security=False;User ID=AnalyticsODSLogin@asos-an-ods-generic-live-eun;Password=pruZup2chaDras4a;Connect Timeout=60;Encrypt=True";
+            var sqlCommandString = "SELECT TOP 10 * FROM [staging].[AzureUsageDetail]";
+
+
+            // declare the SqlDataReader, which is used in
+            // both the try block and the finally block
+            SqlDataReader rdr = null;
+
+            // create a connection object
+            SqlConnection conn = new SqlConnection(sqlConnectionString);
+
+            // create a command object
+            SqlCommand cmd = new SqlCommand(sqlCommandString, conn);
+
+            try
             {
-                try
+                // open the connection
+                conn.Open();
+
+                // 1. get an instance of the SqlDataReader
+                rdr = cmd.ExecuteReader();
+
+                // 2. print necessary columns of each record
+                while (rdr.Read())
                 {
-                    var message = Guid.NewGuid().ToString();
-                    Console.WriteLine("{0} > Sending message: {1}", DateTime.Now, message);
-                    eventHubClient.Send(new EventData(Encoding.UTF8.GetBytes(message)));
+                    var eventHubClient = EventHubClient.CreateFromConnectionString(connectionString, eventHubName);
+
+                    // get the results of each column
+                    var accountOwnerID = (string)rdr["AccountOwnerID"];
+                    var accountName = (string)rdr["AccountName"];
+
+                    try
+                    {
+                        //var message = Guid.NewGuid().ToString();
+                        var message = accountOwnerID + accountName;
+                        Console.WriteLine("{0} > Sending message: {1}", DateTime.Now, message);
+                        eventHubClient.Send(new EventData(Encoding.UTF8.GetBytes(message)));
+                    }
+                    catch (Exception exception)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("{0} > Exception: {1}", DateTime.Now, exception.Message);
+                        Console.ResetColor();
+                    }
+
+                    Thread.Sleep(200);
+
                 }
-                catch (Exception exception)
+            }
+            finally
+            {
+                // 3. close the reader
+                if (rdr != null)
                 {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("{0} > Exception: {1}", DateTime.Now, exception.Message);
-                    Console.ResetColor();
+                    rdr.Close();
                 }
 
-                Thread.Sleep(200);
+                // close the connection
+                if (conn != null)
+                {
+                    conn.Close();
+                }
             }
+        
+
         }
     }
 }
