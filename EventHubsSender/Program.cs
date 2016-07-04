@@ -12,6 +12,7 @@ namespace EventHubsSender
 {
     class Program
     {
+        // EventHub settings
         static string eventHubName = "testsvivekanhub";
         static string connectionString = "Endpoint=sb://testsvivekanhub-ns.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=LmeY4Ck7OGJ4cVjt1rc1a5MrZHlYBEyoLgqEY4NcqEo=";
 
