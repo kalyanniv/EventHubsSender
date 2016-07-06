@@ -26,8 +26,8 @@ namespace EventHubsSender
 
         static void SendingRandomMessages()
         {
-            //Variables
-            var sqlConnectionString = "Data Source=tcp:asos-an-ods-generic-live-eun-d001.database.secure.windows.net,1433;Initial Catalog=AzureUsageOds;Integrated Security=False;User ID=AnalyticsODSLogin@asos-an-ods-generic-live-eun;Password=CuqU5etuyuyUBre$;Connect Timeout=60;Encrypt=True";
+            //SQL Server Variables
+            var sqlConnectionString = "Data Source=tcp:asos-an-ods-generic-live-eun-d001.database.windows.net,1433;Initial Catalog=AzureUsageOds;Integrated Security=False;User ID=AnalyticsODSAdmin@asos-an-ods-generic-live-eun-d001;Password=CuqU5etuyuyUBre$;Connect Timeout=60;Encrypt=True";
             var sqlCommandString = "SELECT TOP 10 * FROM [staging].[AzureUsageDetail]";
 
 
