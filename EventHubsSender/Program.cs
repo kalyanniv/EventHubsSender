@@ -21,10 +21,10 @@ namespace EventHubsSender
             Console.WriteLine("Press Ctrl-C to stop the sender process");
             Console.WriteLine("Press Enter to start now");
             Console.ReadLine();
-            SendingRandomMessages();
+            SendingMessagesFromMovieLens();
         }
 
-        static void SendingRandomMessages()
+        static void SendingMessagesFromMovieLens()
         {
             //SQL Server Variables
             const string serverName = "bangsar";
@@ -33,7 +33,7 @@ namespace EventHubsSender
             const string dwPassword = "Marconi24";
 
             var sqlConnectionString = "Data Source=tcp:" + serverName + ".database.windows.net,1433;Initial Catalog=" + databaseName + ";Integrated Security=False;" + dwLogin + ";Password=" + dwPassword + ";Connect Timeout=60;Encrypt=True";
-            var sqlCommandString = "SELECT TOP 10 * FROM [staging].[AzureUsageDetail]"; 
+            var sqlCommandString = "SELECT TOP 100 * FROM [dbo].[UserRatings]"; 
 
 
             // declare the SqlDataReader, which is used in
