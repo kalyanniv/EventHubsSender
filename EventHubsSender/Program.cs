@@ -27,8 +27,13 @@ namespace EventHubsSender
         static void SendingRandomMessages()
         {
             //SQL Server Variables
-            var sqlConnectionString = "Data Source=tcp:asos-an-ods-generic-live-eun-d001.database.windows.net,1433;Initial Catalog=AzureUsageOds;Integrated Security=False;User ID=AnalyticsODSAdmin@asos-an-ods-generic-live-eun-d001;Password=CuqU5etuyuyUBre$;Connect Timeout=60;Encrypt=True";
-            var sqlCommandString = "SELECT TOP 10 * FROM [staging].[AzureUsageDetail]";
+            const string serverName = "bangsar";
+            const string databaseName = "MovieLens";
+            const string dwLogin = "kalyanniv@bangsar";
+            const string dwPassword = "Marconi24";
+
+            var sqlConnectionString = "Data Source=tcp:" + serverName + ".database.windows.net,1433;Initial Catalog=" + databaseName + ";Integrated Security=False;" + dwLogin + ";Password=" + dwPassword + ";Connect Timeout=60;Encrypt=True";
+            var sqlCommandString = "SELECT TOP 10 * FROM [staging].[AzureUsageDetail]"; 
 
 
             // declare the SqlDataReader, which is used in
