@@ -13,8 +13,8 @@ namespace EventHubsSender
     class Program
     {
         // EventHub settings
-        static string eventHubName = "testsvivekanhub";
-        static string connectionString = "Endpoint=sb://testsvivekanhub-ns.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=LmeY4Ck7OGJ4cVjt1rc1a5MrZHlYBEyoLgqEY4NcqEo=";
+        static string eventHubName = "kalyannivhub";
+        static string connectionString = "Endpoint=sb://kalyannivhub-ns.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=eM0cyXRq8vIheb3KSYGjBBWGryutjucbd362Ne5hPpw=";
 
         static void Main(string[] args)
         {
@@ -32,7 +32,7 @@ namespace EventHubsSender
             const string dwLogin = "kalyanniv@bangsar";
             const string dwPassword = "Marconi24";
 
-            var sqlConnectionString = "Data Source=tcp:" + serverName + ".database.windows.net,1433;Initial Catalog=" + databaseName + ";Integrated Security=False;" + dwLogin + ";Password=" + dwPassword + ";Connect Timeout=60;Encrypt=True";
+            var sqlConnectionString = "Data Source=tcp:" + serverName + ".database.windows.net,1433;Initial Catalog=" + databaseName + ";Integrated Security=False;" + "Uid=" + dwLogin + ";Password=" + dwPassword + ";Connect Timeout=60;Encrypt=True";
             var sqlCommandString = "SELECT TOP 100 * FROM [dbo].[UserRatings]"; 
 
 
@@ -60,13 +60,14 @@ namespace EventHubsSender
                     var eventHubClient = EventHubClient.CreateFromConnectionString(connectionString, eventHubName);
 
                     // get the results of each column
-                    var accountOwnerID = (string)rdr["AccountOwnerID"];
-                    var accountName = (string)rdr["AccountName"];
+                    var userId = (int)rdr["UserId"];
+                    var itemId = (int)rdr["ItemId"];
+                    var rating = (int)rdr["Rating"];
+                    var timestamp = (Int64)rdr["Timestamp"];
 
                     try
                     {
-                        //var message = Guid.NewGuid().ToString();
-                        var message = accountOwnerID + accountName;
+                        var message = userId.ToString() + "," + itemId.ToString() + "," + rating.ToString() + "," + timestamp.ToString();
                         Console.WriteLine("{0} > Sending message: {1}", DateTime.Now, message);
                         eventHubClient.Send(new EventData(Encoding.UTF8.GetBytes(message)));
                     }
