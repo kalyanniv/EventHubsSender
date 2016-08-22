@@ -14,7 +14,7 @@ namespace EventHubsSender
     {
         // EventHub settings
         static string eventHubName = "kalyannivhub";
-        static string connectionString = "Endpoint=sb://kalyannivhub-ns.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=eM0cyXRq8vIheb3KSYGjBBWGryutjucbd362Ne5hPpw=";
+        static string connectionString = "Endpoint=sb://kalyannivhub-ns.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=xBjiknfBY26+nY+AHuV/UmjaA9vXH1rQ3zZEgvI+QcM=";
 
         static void Main(string[] args)
         {
